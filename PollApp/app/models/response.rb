@@ -25,15 +25,13 @@ has_one :question,
 
   def sibling_responses
     question.responses
-      .where.not("responses.id IN (?)", self.id)
-      # .where.not("responses", self)
+      .where.not(id: self.id)
+      # .where.not("responses": self)
   end
 
   def respondent_already_answered?
-    debugger
     # if sibling_responses.pluck(:user_id).include?(respondent.id)
     if sibling_responses.exists?(user_id: user_id)
-      p "pass"
       errors[:respondent] << "already answered"
     end
   end
